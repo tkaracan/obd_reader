@@ -61,8 +61,8 @@ class InfoBox(tk.Tk):
                 frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 10), bg='black', fg='white')
                 frame.key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 0), sticky="w")
 
-                frame.percent_box = tk.Frame(frame, width=100, height=100, bg='blue')
-                frame.percent_box.place(relx=0.5, rely=0.5, anchor='center')
+                frame.percent_box = tk.Frame(frame, width=frame_width, height=frame_height/3, bg='black')
+                frame.percent_box.place(relx=0, rely=0.5, anchor='w')
 
             self.info_frames[key] = frame
 
@@ -96,8 +96,8 @@ class InfoBox(tk.Tk):
                     bottom_value = random_data["bottom"]
                     value = random_data["value"]
                     percentage = (value - bottom_value) / (top_value - bottom_value)
-                    new_size = max(1, int(100 * percentage))
-                    frame.percent_box.configure(width=new_size, height=new_size)
+                    new_width = max(1, int(frame.percent_box.winfo_width() * percentage))
+                    frame.percent_box.configure(width=new_width)
                 else:
                     value_label = frame.value_label
                     value_label.config(text=str(random_data))
