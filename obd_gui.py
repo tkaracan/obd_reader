@@ -1,7 +1,6 @@
 import tkinter as tk
 import random
 
-
 class InfoBox(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -12,9 +11,16 @@ class InfoBox(tk.Tk):
         self.padding = 5
         self.geometry(f"{self.width}x{self.height}")
         self.configure(bg='black')  # Set the background color of the whole screen to black
+
+        # Initialize design variables before creating frames
+        self.key_font_size = 20
+        self.bg_color = 'white'
+        self.fg_color = 'black'
+
         self.info_frames = {}
-        self.create_info_frames()
+        self.create_info_frames()  # Now safe to call after setting attributes
         self.update_info()
+
 
     def create_info_frames(self):
         subkeys = ["Subkey 1", "Subkey 2", "Subkey 3"]
@@ -30,47 +36,40 @@ class InfoBox(tk.Tk):
         for i, (key, design, subkeys) in enumerate(zip(keys, designs, frame_subkeys)):
             frame = tk.Frame(self, width=frame_width, height=frame_height, bg='black', relief="groove",
                              highlightbackground="white",
-                             highlightthickness=1)  # Set frame background to black and border to white
+                             highlightthickness=1)
             frame.grid(row=i // 2, column=i % 2, padx=self.padding, pady=self.padding)
             frame.grid_propagate(False)
 
+            # Use variables for key label design
+            frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", self.key_font_size), bg=self.bg_color, fg=self.fg_color)
+            frame.key_label.place(x=10, y=10)
+
             if design == "single":
                 frame.initialized = True
-                frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 40), bg='white', fg='black',
+                frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 40), bg=self.bg_color, fg=self.fg_color,
                                              anchor='nw')
                 frame.value_label.place(relx=0.5, rely=0.5, anchor='center')
-                frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 20), bg='white', fg='black')
-                frame.key_label.place(x=10, y=10)
             elif design == "multiple":
                 frame.initialized = True
                 frame.key_labels = {}
                 frame.value_labels = {}
                 frame.data = {}
-
-                frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 10), bg='white', fg='black')
-                frame.key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 0), sticky="w")
-
                 for j, sub_key in enumerate(subkeys):
-                    key_label = tk.Label(frame, text=sub_key, font=("Noto Sans Mono", 12), anchor="e", bg='white',
-                                         fg='black')
+                    key_label = tk.Label(frame, text=sub_key, font=("Noto Sans Mono", 12), anchor="e", bg=self.bg_color,
+                                         fg=self.fg_color)
                     key_label.grid(row=j + 1, column=0, padx=(10, 5), pady=(10 if j == 0 else 5, 5), sticky="e")
                     frame.key_labels[sub_key] = key_label
 
-                    value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 12), anchor="w", bg='white',
-                                           fg='black')
+                    value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 12), anchor="w", bg=self.bg_color,
+                                           fg=self.fg_color)
                     value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=(10 if j == 0 else 5, 5), sticky="w")
                     frame.value_labels[sub_key] = value_label
 
             elif design == "percent":
                 frame.initialized = True
-                frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 10), bg='white', fg='black')
-                frame.key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 0), sticky="w")
-
-
-
-                frame.percent_box = tk.Frame(frame, width=frame_width, height=frame_height / 3, bg='white')
+                frame.percent_box = tk.Frame(frame, width=frame_width, height=frame_height / 3, bg=self.bg_color)
                 frame.percent_box.place(relx=0, rely=0.5, anchor='w')
-                frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 20), bg='white', fg='black',
+                frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 20), bg=self.bg_color, fg=self.fg_color,
                                              anchor='nw')
                 frame.value_label.place(relx=0.5, rely=0.5, anchor='center')
 
