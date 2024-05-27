@@ -66,20 +66,16 @@ class InfoBox(tk.Tk):
                 subframe.place(relx=1, rely=0.5, anchor="e", x=-10)
 
                 for j, sub_key in enumerate(subkeys):
-                    # Create a frame for each subkey-value pair
-                    pair_frame = tk.Frame(subframe, bg=self.bg_color)
-                    pair_frame.grid(row=j, column=0, sticky="e")
-
                     # Subkey labels
-                    key_label = tk.Label(pair_frame, text=sub_key + ":", font=("Noto Sans Mono", 12), anchor="w",
+                    key_label = tk.Label(subframe, text=sub_key + ":", font=("Noto Sans Mono", 12), anchor="w",
                                          bg=self.bg_color, fg=self.fg_color)
-                    key_label.pack(side="left", padx=(0, 5), pady=5)
+                    key_label.grid(row=j, column=0, padx=(0, 5), pady=5, sticky="w")
                     frame.key_labels[sub_key] = key_label
 
                     # Value labels
-                    value_label = tk.Label(pair_frame, text="", font=("Noto Sans Mono", 12), anchor="e",
-                                           bg=self.bg_color, fg=self.fg_color)
-                    value_label.pack(side="left", padx=(5, 0), pady=5)
+                    value_label = tk.Label(subframe, text="", font=("Noto Sans Mono", 12), anchor="e", bg=self.bg_color,
+                                           fg=self.fg_color)
+                    value_label.grid(row=j, column=1, padx=(5, 0), pady=5, sticky="e")
                     frame.value_labels[sub_key] = value_label
 
 
