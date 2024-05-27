@@ -1,6 +1,7 @@
 import tkinter as tk
 import random
 
+
 class InfoBox(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -15,10 +16,12 @@ class InfoBox(tk.Tk):
         self.update_info()
 
     def create_info_frames(self):
-        keys = ["Value 1", "Value 2", "Value 3", "Value 4"]
-        designs = [1, 2, 2, 1]
         subkeys = ["Subkey 1", "Subkey 2", "Subkey 3"]
-        frame_subkeys = [None, subkeys, subkeys, None]
+        values = {"bottom": 0, "top": 100}
+
+        keys = ["Value 1", "Value 2", "Value 3", "Value 4"]
+        designs = ["single", "multiple", "multiple", "percent"]
+        frame_subkeys = [None, subkeys, subkeys, values]
 
         frame_width = (self.width - (self.columns + 1) * self.padding) / self.columns
         frame_height = (self.height - (len(keys) // self.columns + 1) * self.padding) / (len(keys) // self.columns)
@@ -28,14 +31,14 @@ class InfoBox(tk.Tk):
             frame.grid(row=i // 2, column=i % 2, padx=self.padding, pady=self.padding)
             frame.grid_propagate(False)
 
-            if design == 1:
+            if design == "single":
                 frame.initialized = True
                 frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 20), bg='black', fg='white',
                                              anchor='nw')
                 frame.value_label.place(relx=0.5, rely=0.5, anchor='center')
                 frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 10), bg='black', fg='white')
                 frame.key_label.place(x=10, y=10)
-            elif design == 2:
+            elif design == "multiple":
                 frame.initialized = True
                 frame.key_labels = {}
                 frame.value_labels = {}
@@ -52,6 +55,14 @@ class InfoBox(tk.Tk):
                     value_label = tk.Label(frame, text="", font=("Arial", 12), anchor="w")
                     value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=(10 if j == 0 else 5, 5), sticky="w")
                     frame.value_labels[sub_key] = value_label
+
+            elif design == "percent":
+                frame.initialized = True
+                frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 10), bg='black', fg='white')
+                frame.key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 0), sticky="w")
+
+                frame.percent_box = tk.Frame(frame, width=100, height=100, bg='blue')
+                frame.percent_box.place(relx=0.5, rely=0.5, anchor='center')
 
             self.info_frames[key] = frame
 
@@ -71,7 +82,7 @@ class InfoBox(tk.Tk):
                 "Subkey 3": random.choice(["Option A", "Option B", "Option C"])
             }
         elif key == "Value 4":
-            return random.randint(1000, 9999)
+            return {"value": random.randint(0, 100), "top": 100, "bottom": 0}
         else:
             return "Unknown"
 
@@ -80,8 +91,16 @@ class InfoBox(tk.Tk):
             random_data = self.generate_random_data(key)
 
             if key in ["Value 1", "Value 4"]:
-                value_label = frame.value_label
-                value_label.config(text=str(random_data))
+                if key == "Value 4":
+                    top_value = random_data["top"]
+                    bottom_value = random_data["bottom"]
+                    value = random_data["value"]
+                    percentage = (value - bottom_value) / (top_value - bottom_value)
+                    new_size = max(1, int(100 * percentage))
+                    frame.percent_box.configure(width=new_size, height=new_size)
+                else:
+                    value_label = frame.value_label
+                    value_label.config(text=str(random_data))
             else:
                 frame.data.update(random_data)
                 for sub_key, value in frame.data.items():
@@ -89,6 +108,7 @@ class InfoBox(tk.Tk):
                     value_label.config(text=str(value))
 
         self.after(1000, self.update_info)
+
 
 if __name__ == "__main__":
     info_box = InfoBox()
