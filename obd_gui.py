@@ -36,10 +36,10 @@ class InfoBox(tk.Tk):
 
             if design == "single":
                 frame.initialized = True
-                frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 20), bg='white', fg='black',
+                frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 40), bg='white', fg='black',
                                              anchor='nw')
                 frame.value_label.place(relx=0.5, rely=0.5, anchor='center')
-                frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 10), bg='black', fg='white')
+                frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 20), bg='white', fg='black')
                 frame.key_label.place(x=10, y=10)
             elif design == "multiple":
                 frame.initialized = True
@@ -51,19 +51,19 @@ class InfoBox(tk.Tk):
                 frame.key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 0), sticky="w")
 
                 for j, sub_key in enumerate(subkeys):
-                    key_label = tk.Label(frame, text=sub_key, font=("Noto Sans Mono", 12), anchor="e", bg='black',
-                                         fg='white')
+                    key_label = tk.Label(frame, text=sub_key, font=("Noto Sans Mono", 12), anchor="e", bg='white',
+                                         fg='black')
                     key_label.grid(row=j + 1, column=0, padx=(10, 5), pady=(10 if j == 0 else 5, 5), sticky="e")
                     frame.key_labels[sub_key] = key_label
 
-                    value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 12), anchor="w", bg='black',
-                                           fg='white')
+                    value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 12), anchor="w", bg='white',
+                                           fg='black')
                     value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=(10 if j == 0 else 5, 5), sticky="w")
                     frame.value_labels[sub_key] = value_label
 
             elif design == "percent":
                 frame.initialized = True
-                frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 10), bg='black', fg='white')
+                frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 10), bg='white', fg='black')
                 frame.key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 0), sticky="w")
 
 
