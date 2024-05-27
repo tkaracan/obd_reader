@@ -6,7 +6,11 @@ class InfoBox(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Info Box")
-        self.geometry("500x500")
+        self.height = 500
+        self.width = 800
+        self.columns = 2
+        self.padding = 5
+        self.geometry(f"{self.width}x{self.height}")
 
         self.info_frames = {}
         self.create_info_frames()
@@ -16,18 +20,22 @@ class InfoBox(tk.Tk):
         # Create frames for each key in a 2x2 grid
         keys = ["Value 1", "Value 2", "Value 3", "Value 4"]
         designs = [1, 2, 2, 1]  # Specify the design for each key
+        frame_width = (self.width - (self.columns + 1) * self.padding) / self.columns
+        frame_height = (self.height - (len(keys) // self.columns + 1) * self.padding) / (len(keys) // self.columns)
+
 
         for i, (key, design) in enumerate(zip(keys, designs)):
-            frame = tk.Frame(self, width=200, height=200, borderwidth=2, relief="groove")
-            frame.grid(row=i // 2, column=i % 2, padx=10, pady=10)
+            frame = tk.Frame(self, width=frame_width, height=frame_height, borderwidth=1, relief="groove")
+            frame.grid(row=i // 2, column=i % 2, padx=self.padding, pady=self.padding)
             frame.grid_propagate(False)  # Disable grid propagation to maintain fixed size
 
             if design == 1:
-                value_label = tk.Label(frame, text="", font=("Arial", 20))
-                value_label.place(relx=0.5, rely=0.1, anchor="center")
-
-                key_label = tk.Label(frame, text=f"{key}:", font=("Arial", 12))
-                key_label.place(relx=0.5, rely=0.5, anchor="center")
+                frame.initialized = True
+                frame.key_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 10), bg='black', fg='white',
+                                           anchor='nw')
+                frame.key_label.place(x=10, y=10)
+                frame.value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 20), bg='black', fg='white')
+                frame.value_label.place(relx=0.5, rely=0.5, anchor='center')
             elif design == 2:
                 label = tk.Label(frame, text=f"{key}: ", font=("Arial", 16))
                 label.place(relx=0.5, rely=0.5, anchor="center")
