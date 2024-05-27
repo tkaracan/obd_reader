@@ -5,6 +5,8 @@ from datetime import datetime
 import obd
 from commands import commands_list
 from speed import Speed
+import tkinter as tk
+from templates import frame_single
 
 
 # Initialize the database
@@ -76,10 +78,34 @@ def speed_update():
             print("No speed entries found.")
         time.sleep(2)  # Wait for 2 seconds before the next retrieval
 
+def create_gui(update_queue):
+    w, h = 800, 500
+    window_size = f"{w}x{h}"
+    root = tk.Tk()
+    root.title("Car Data Display")
+    root.geometry(window_size)
+    root.config(bg='black')
+    column_count = 3
+    frame_count = 9
+    row_count = frame_count // column_count
+    frame_width = (w - (column_count + 1) * 10) / column_count
+    frame_height = (h - (row_count + 1) * 10) / row_count
+
+    frames = []
+    for i in range(frame_count):
+        row = i // column_count
+        col = i % column_count
+        label = f"Label {i+1}"
+        frame = frame_single(root, frame_width, frame_height, label, row, col)
+        frames.append(frame)
+
+    return frames, root
+
 
 
 if __name__ == "__main__":
     initialize_database()
+    create_gui()
     speed_update()
     obd_thread = threading.Thread(target=collect_obd_data, daemon=True)
     obd_thread.start()
