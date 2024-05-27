@@ -17,21 +17,21 @@ class InfoBox(tk.Tk):
     def create_info_frames(self):
         keys = ["Value 1", "Value 2", "Value 3", "Value 4"]
         designs = [1, 2, 2, 1]
+        subkeys = ["Subkey 1", "Subkey 2", "Subkey 3"]
+        frame_subkeys = [None, subkeys, subkeys, None]
 
         frame_width = (self.width - (self.columns + 1) * self.padding) / self.columns
         frame_height = (self.height - (len(keys) // self.columns + 1) * self.padding) / (len(keys) // self.columns)
 
-        for i, (key, design) in enumerate(zip(keys, designs)):
+        for i, (key, design, subkeys) in enumerate(zip(keys, designs, frame_subkeys)):
             frame = tk.Frame(self, width=frame_width, height=frame_height, borderwidth=1, relief="groove")
             frame.grid(row=i // 2, column=i % 2, padx=self.padding, pady=self.padding)
             frame.grid_propagate(False)
 
             if design == 1:
                 frame.initialized = True
-
                 frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 10), bg='black', fg='white', anchor='nw')
                 frame.value_label.place(relx=0.5, rely=0.5, anchor='center')
-
                 frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 20), bg='black', fg='white')
                 frame.key_label.place(x=10, y=10)
             elif design == 2:
@@ -39,7 +39,7 @@ class InfoBox(tk.Tk):
                 frame.value_labels = {}
                 frame.data = {}
 
-                for j, sub_key in enumerate(["Subkey 1", "Subkey 2", "Subkey 3"]):
+                for j, sub_key in enumerate(subkeys):
                     key_label = tk.Label(frame, text=sub_key, font=("Arial", 12, "bold"), anchor="e")
                     key_label.grid(row=j, column=0, padx=(10, 5), pady=5, sticky="e")
                     frame.key_labels[sub_key] = key_label
@@ -50,20 +50,20 @@ class InfoBox(tk.Tk):
 
             self.info_frames[key] = frame
 
-    def generate_random_data(self, key):
+    def generate_random_data(self, key, subkeys):
         if key == "Value 1":
             return random.randint(0, 100)
         elif key == "Value 2":
             return {
-                "Subkey 1": random.randint(0, 100),
-                "Subkey 2": random.uniform(0, 10),
-                "Subkey 3": random.choice(["Option X", "Option Y", "Option Z"])
+                subkeys[0]: random.randint(0, 100),
+                subkeys[1]: random.uniform(0, 10),
+                subkeys[2]: random.choice(["Option X", "Option Y", "Option Z"])
             }
         elif key == "Value 3":
             return {
-                "Subkey 1": random.randint(1000, 9999),
-                "Subkey 2": random.uniform(100, 1000),
-                "Subkey 3": random.choice(["Option A", "Option B", "Option C"])
+                subkeys[0]: random.randint(1000, 9999),
+                subkeys[1]: random.uniform(100, 1000),
+                subkeys[2]: random.choice(["Option A", "Option B", "Option C"])
             }
         elif key == "Value 4":
             return random.randint(1000, 9999)
@@ -72,10 +72,11 @@ class InfoBox(tk.Tk):
 
     def update_info(self):
         for key, frame in self.info_frames.items():
-            random_data = self.generate_random_data(key)
+            subkeys = frame.key_labels.keys() if hasattr(frame, 'key_labels') else None
+            random_data = self.generate_random_data(key, subkeys)
 
             if key in ["Value 1", "Value 4"]:
-                value_label = frame.winfo_children()[0]
+                value_label = frame.value_label
                 value_label.config(text=str(random_data))
             else:
                 frame.data.update(random_data)
