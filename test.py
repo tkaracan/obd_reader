@@ -22,19 +22,16 @@ def initialize_database():
 def collect_obd_data():
     connection = None
     try_count = 0
-    while True:
-        if connection is None or not connection.is_connected():
-            try:
-                connection = obd.OBD()
-            except Exception as e:
-                print(f"{try_count} - Failed to connect to OBD-II interface: {str(e)}")
-                time.sleep(2)  # Wait for 2 seconds before retrying
-                try_count += 1
-                continue  # Ensure retry logic is in effect if connection fails
-
-        if connection.is_connected():
+    # Try to establish an initial OBD connection
+    while connection is None or not connection.is_connected():
+        try:
+            time.sleep(2)  # Ensure this sleep is before trying to connect
+            connection = obd.OBD()
             print("Successfully connected to OBD-II interface.")
-            break  # Break out of the loop if connected successfully
+        except Exception as e:
+            print(f"{try_count} - Failed to connect to OBD-II interface: {str(e)}")
+            try_count += 1
+            continue  # Keep trying until a connection is made
 
     conn = sqlite3.connect('obd_readings.db')
     cursor = conn.cursor()
@@ -51,23 +48,23 @@ def collect_obd_data():
         except KeyError:
             print(f"Command {command_name} is not supported")
 
-    # Collect and store data from supported commands
-    for command_name in supported_commands:
-        response = connection.query(obd.commands[command_name])
-        if response.value is not None:
-            if hasattr(response.value, 'magnitude'):
-                print(f"{command_name}: {response.value.magnitude}")
-                value = response.value.magnitude
+    # Continuously collect and store data
+    while True:
+        for command_name in supported_commands:
+            response = connection.query(obd.commands[command_name])
+            if response.value is not None:
+                if hasattr(response.value, 'magnitude'):
+                    print(f"{command_name}: {response.value.magnitude}")
+                    value = response.value.magnitude
+                else:
+                    value = str(response.value)
             else:
-                value = str(response.value)
-        else:
-            value = "N/A"
-        cursor.execute('INSERT INTO car_data (timestamp, command, value) VALUES (?, ?, ?)',
-                       (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), command_name, value))
-        conn.commit()
+                value = "N/A"
+            cursor.execute('INSERT INTO car_data (timestamp, command, value) VALUES (?, ?, ?)',
+                           (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), command_name, value))
+            conn.commit()
 
-    conn.close()
-    time.sleep(1)  # Wait for 1 second before the next iteration
+        time.sleep(1)  # Pause before the next data collection cycle
 
 if __name__ == "__main__":
     initialize_database()
