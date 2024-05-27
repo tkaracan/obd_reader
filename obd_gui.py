@@ -61,22 +61,22 @@ class InfoBox(tk.Tk):
                                            bg=self.bg_color, fg=self.fg_color)
                 frame.key_label.place(x=10, y=10)
 
-                # Create a subframe to hold the subkey-value pairs
-                subframe = tk.Frame(frame, bg=self.bg_color)
-                subframe.place(relx=1, rely=0.5, anchor="e", x=-10)
+                y_offset = 50  # Start placing at 50 px vertically
 
-                for j, sub_key in enumerate(subkeys):
+                for sub_key in subkeys:
                     # Subkey labels
-                    key_label = tk.Label(subframe, text=sub_key + ":", font=("Noto Sans Mono", 12), anchor="w",
+                    key_label = tk.Label(frame, text=sub_key + ":", font=("Noto Sans Mono", 12), anchor="w",
                                          bg=self.bg_color, fg=self.fg_color)
-                    key_label.grid(row=j, column=0, padx=(0, 5), pady=5, sticky="w")
+                    key_label.place(x=20, y=y_offset, anchor="w")
                     frame.key_labels[sub_key] = key_label
 
                     # Value labels
-                    value_label = tk.Label(subframe, text="", font=("Noto Sans Mono", 12), anchor="e", bg=self.bg_color,
+                    value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 12), anchor="e", bg=self.bg_color,
                                            fg=self.fg_color)
-                    value_label.grid(row=j, column=1, padx=(5, 0), pady=5, sticky="e")
+                    value_label.place(x=frame.winfo_width() - 20, y=y_offset, anchor="e")
                     frame.value_labels[sub_key] = value_label
+
+                    y_offset += 30  # Increment the vertical offset for the next subkey-value pair
 
 
 
