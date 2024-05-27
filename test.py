@@ -4,7 +4,7 @@ import sqlite3
 import time
 from datetime import datetime
 import obd
-
+from commands import commands_list
 # Initialize the database
 def initialize_database():
     conn = sqlite3.connect('obd_data.db')
@@ -23,9 +23,11 @@ def initialize_database():
 def collect_obd_data():
     conn = sqlite3.connect('obd_data.db')
     cursor = conn.cursor()
-    connection = obd.OBD()  # Auto-connects to USB or RF port
+    connection = obd.OBD()
+    # Auto-connects to USB or RF port
     while True:
-        for command in ["RPM", "SPEED"]:  # Simplified command list
+        for c in commands_list:  # Simplified command list
+            command = c["Name"]
             response = connection.query(obd.commands[command])
             value = float(response.value.magnitude) if response.value else "N/A"
             cursor.execute('INSERT INTO car_data (timestamp, command, value) VALUES (?, ?, ?)',
@@ -41,9 +43,11 @@ def create_gui():
     root.geometry("800x500")
     root.config(bg='black')
 
+
     frames = {
         "RPM": tk.Label(root, text="", font=("Helvetica", 16), bg='black', fg='white'),
-        "SPEED": tk.Label(root, text="", font=("Helvetica", 16), bg='black', fg='white')
+        "SPEED": tk.Label(root, text="", font=("Helvetica", 16), bg='black', fg='white'),
+        "ENGINE_LOAD": tk.Label(root, text="", font=("Helvetica", 16), bg='black', fg='white')
     }
 
     for key, frame in frames.items():
