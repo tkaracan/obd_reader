@@ -66,7 +66,7 @@ class InfoBox(tk.Tk):
                 frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 10), bg='black', fg='white')
                 frame.key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 0), sticky="w")
 
-                frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 20), bg='black', fg='white',
+                frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 20), bg='white', fg='black',
                                              anchor='nw')
                 frame.value_label.place(relx=0.5, rely=0.5, anchor='center')
 
