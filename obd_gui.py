@@ -13,7 +13,7 @@ class InfoBox(tk.Tk):
         self.configure(bg='black')  # Set the background color of the whole screen to black
 
         # Initialize design variables before creating frames
-        self.key_font_size = 20
+        self.key_font_size = 15
         self.bg_color = 'white'
         self.fg_color = 'black'
 
@@ -57,7 +57,7 @@ class InfoBox(tk.Tk):
                 frame.data = {}
 
                 # Title label for the key
-                frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", self.key_font_size),
+                frame.key_label = tk.Label(frame, text=f"{key}", font=("Noto Sans Mono", self.key_font_size),
                                            bg=self.bg_color, fg=self.fg_color)
                 frame.key_label.place(x=10, y=10)
 
@@ -65,8 +65,8 @@ class InfoBox(tk.Tk):
 
                 for sub_key in subkeys:
                     # Subkey labels
-                    key_label = tk.Label(frame, text=sub_key + ":", font=("Noto Sans Mono", 12), anchor="w",
-                                         bg=self.bg_color, fg=self.fg_color)
+                    key_label = tk.Label(frame, text=sub_key, font=("Noto Sans Mono", 12), anchor="w",
+                                         bg='white', fg='black')
                     key_label.place(x=20, y=y_offset, anchor="w")
                     frame.key_labels[sub_key] = key_label
 
