@@ -62,15 +62,15 @@ class InfoBox(tk.Tk):
 
                 for j, sub_key in enumerate(subkeys):
                     # Subkey labels
-                    key_label = tk.Label(frame, text=sub_key + ":", font=("Noto Sans Mono", 12), anchor="e", bg=self.bg_color,
+                    key_label = tk.Label(frame, text=sub_key + ":", font=("Noto Sans Mono", 12), anchor="w", bg=self.bg_color,
                                          fg=self.fg_color)
-                    key_label.grid(row=j + 1, column=0, padx=(10, 5), pady=(10, 5), sticky="e")
+                    key_label.grid(row=j + 1, column=0, padx=(10, 5), pady=(10, 5), sticky="w")
                     frame.key_labels[sub_key] = key_label
 
                     # Value labels
-                    value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 12), anchor="w", bg=self.bg_color,
+                    value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 12), anchor="e", bg=self.bg_color,
                                            fg=self.fg_color)
-                    value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=(10, 5), sticky="w")
+                    value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=(10, 5), sticky="e")
                     frame.value_labels[sub_key] = value_label
 
 
