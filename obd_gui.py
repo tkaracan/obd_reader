@@ -96,13 +96,13 @@ class InfoBox(tk.Tk):
         elif key == "Value 2":
             return {
                 "Subkey 1": random.randint(0, 100),
-                "Subkey 2": random.uniform(0, 10),
+                "Subkey 2": random.randint(0, 10),
                 "Subkey 3": random.choice(["Option X", "Option Y", "Option Z"])
             }
         elif key == "Value 3":
             return {
                 "Subkey 1": random.randint(1000, 9999),
-                "Subkey 2": random.uniform(100, 1000),
+                "Subkey 2": random.randint(100, 1000),
                 "Subkey 3": random.choice(["Option A", "Option B", "Option C"])
             }
         elif key == "Value 4":
