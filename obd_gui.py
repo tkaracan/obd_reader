@@ -42,15 +42,15 @@ class InfoBox(tk.Tk):
                 frame.data = {}
 
                 frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 10), bg='black', fg='white')
-                frame.key_label.place(x=10, y=10)
+                frame.key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 0), sticky="w")
 
                 for j, sub_key in enumerate(subkeys):
-                    key_label = tk.Label(frame, text=sub_key, font=("Noto Sans Mono", 10), anchor="e")
-                    key_label.grid(row=j + 1, column=0, padx=(10, 5), pady=5, sticky="e")
+                    key_label = tk.Label(frame, text=sub_key, font=("Arial", 12, "bold"), anchor="e")
+                    key_label.grid(row=j + 1, column=0, padx=(10, 5), pady=(10 if j == 0 else 5, 5), sticky="e")
                     frame.key_labels[sub_key] = key_label
 
-                    value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 10), anchor="w")
-                    value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=5, sticky="w")
+                    value_label = tk.Label(frame, text="", font=("Arial", 12), anchor="w")
+                    value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=(10 if j == 0 else 5, 5), sticky="w")
                     frame.value_labels[sub_key] = value_label
 
             self.info_frames[key] = frame
