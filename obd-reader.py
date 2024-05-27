@@ -3,6 +3,7 @@ import threading
 import queue
 import time
 from datetime import datetime
+from commands import commands_list
 
 import obd
 import csv
@@ -154,32 +155,33 @@ def collect_obd_data(update_queue):
         if not connection.is_connected():
             raise Exception("Failed to connect to OBD-II device")
 
-        commands = [
-            obd.commands.SPEED, obd.commands.RPM, obd.commands.ENGINE_LOAD, obd.commands.THROTTLE_POS_B,
-            obd.commands.DISTANCE_SINCE_DTC_CLEAR, obd.commands.FUEL_LEVEL, obd.commands.ACCELERATOR_POS_D,
-            obd.commands.AMBIANT_AIR_TEMP, obd.commands.ACCELERATOR_POS_E
-        ]
-        data_batch = {}
+        # Map custom commands to obd.commands
+        obd_commands = {cmd['Name']: getattr(obd.commands, cmd['Name'], None) for cmd in commands_list}
 
         with open('Tugrul_obd_data.csv', 'a', newline='') as file:
             writer = csv.writer(file)
             if file.tell() == 0:
-                writer.writerow(['Timestamp', 'Command', 'Value'])
+                writer.writerow(['Timestamp', 'Command', 'Value', 'Mock Data'])
 
             while True:
-                for cmd in commands:
-                    response = connection.query(cmd)
-                    if response.value is not None:
-                        value = response.value
-                        if hasattr(value, 'magnitude'):
-                            value = float(value.magnitude)
-                        data_batch[cmd.name] = value
-                        writer.writerow([time.strftime("%m/%d/%y - %H:%M:%S"), cmd.name, str(value)])
+                data_batch = {}
+                for command in commands_list:
+                    obd_cmd = obd_commands.get(command['Name'])
+                    if obd_cmd is not None:
+                        response = connection.query(obd_cmd)
+                        if response.value is not None:
+                            value = response.value
+                            if hasattr(value, 'magnitude'):
+                                value = float(value.magnitude)
+                            data_batch[command['Name']] = value
+                            writer.writerow([time.strftime("%m/%d/%y - %H:%M:%S"), command['Name'], str(value), "No"])
+                        else:
+                            data_batch[command['Name']] = "N/A"
+                            writer.writerow([time.strftime("%m/%d/%y - %H:%M:%S"), command['Name'], "N/A", "No"])
                     else:
-                        data_batch[cmd.name] = "N/A"
-                        writer.writerow([time.strftime("%m/%d/%y - %H:%M:%S"), cmd.name, "N/A"])
+                        print(f"Command {command['Name']} not found in OBD library")
 
-                # Process the batch and push it to the queue
+                data_batch["Mock Data"] = False
                 processed_data = process_data(data_batch)
                 update_queue.put(processed_data)
                 time.sleep(1)
