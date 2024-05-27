@@ -70,7 +70,7 @@ class InfoBox(tk.Tk):
                                              anchor='nw')
                 frame.value_label.place(relx=0.5, rely=0.5, anchor='center')
 
-                frame.percent_box = tk.Frame(frame, width=frame_width, height=frame_height / 3, bg='black')
+                frame.percent_box = tk.Frame(frame, width=frame_width, height=frame_height / 3, bg='white')
                 frame.percent_box.place(relx=0, rely=0.5, anchor='w')
 
             self.info_frames[key] = frame
