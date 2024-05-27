@@ -24,8 +24,8 @@ class InfoBox(tk.Tk):
         designs = ["single", "multiple", "multiple", "percent"]
         frame_subkeys = [None, subkeys, subkeys, values]
 
-        frame_width = (self.width - (self.columns + 1) * self.padding) / self.columns
-        frame_height = (self.height - (len(keys) // self.columns + 1) * self.padding) / (len(keys) // self.columns)
+        frame_width = (self.width - (self.columns + 2) * self.padding) / self.columns
+        frame_height = (self.height - (len(keys) // self.columns + 2) * self.padding) / (len(keys) // self.columns)
 
         for i, (key, design, subkeys) in enumerate(zip(keys, designs, frame_subkeys)):
             frame = tk.Frame(self, width=frame_width, height=frame_height, bg='black', relief="groove",
@@ -66,12 +66,13 @@ class InfoBox(tk.Tk):
                 frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", 10), bg='black', fg='white')
                 frame.key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 0), sticky="w")
 
-                frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 20), bg='white', fg='black',
-                                             anchor='nw')
-                frame.value_label.place(relx=0.5, rely=0.5, anchor='center')
+
 
                 frame.percent_box = tk.Frame(frame, width=frame_width, height=frame_height / 3, bg='white')
                 frame.percent_box.place(relx=0, rely=0.5, anchor='w')
+                frame.value_label = tk.Label(frame, text=key, font=("Noto Sans Mono", 20), bg='white', fg='black',
+                                             anchor='nw')
+                frame.value_label.place(relx=0.5, rely=0.5, anchor='center')
 
             self.info_frames[key] = frame
 
