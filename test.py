@@ -31,9 +31,10 @@ def collect_obd_data():
                 connection = obd.OBD()
             except Exception as e:
                 print(f"Failed to connect to OBD-II interface: {str(e)}")
-                time.sleep(1)  # Wait for 1 second before retrying
-                continue
+                time.sleep(2)  # Wait for 2 second before retrying
 
+    connection = obd.OBD()
+    while True:
         conn = sqlite3.connect('obd_data.db')
         cursor = conn.cursor()
 
@@ -65,9 +66,7 @@ def collect_obd_data():
         conn.close()
         time.sleep(1)  # Wait for 1 second before the next iteration
 
-
-# Function to retrieve average speed data every 2 seconds
-def get_average_speed():
+def speed_update():
     speed_calculator = Speed()
     while True:
         average_speed = speed_calculator.Avspeed()
@@ -78,13 +77,10 @@ def get_average_speed():
         time.sleep(2)  # Wait for 2 seconds before the next retrieval
 
 
+
 if __name__ == "__main__":
     initialize_database()
+    speed_update()
     obd_thread = threading.Thread(target=collect_obd_data, daemon=True)
-    speed_thread = threading.Thread(target=get_average_speed, daemon=True)
     obd_thread.start()
-    speed_thread.start()
 
-    while True:
-        # Keep the main thread running
-        time.sleep(1)
