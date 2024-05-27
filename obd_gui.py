@@ -61,7 +61,7 @@ class InfoBox(tk.Tk):
                                            bg=self.bg_color, fg=self.fg_color)
                 frame.key_label.place(x=10, y=10)
 
-                y_offset = 50  # Start placing at 50 px vertically
+                y_offset = 100  # Start placing at 50 px vertically
 
                 for sub_key in subkeys:
                     # Subkey labels
@@ -73,7 +73,7 @@ class InfoBox(tk.Tk):
                     # Value labels
                     value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 12), anchor="e", bg=self.bg_color,
                                            fg=self.fg_color)
-                    value_label.place(x=frame.winfo_width() - 20, y=y_offset, anchor="e")
+                    value_label.place(x=frame_width-20, y=y_offset, anchor="e")
                     frame.value_labels[sub_key] = value_label
 
                     y_offset += 30  # Increment the vertical offset for the next subkey-value pair
