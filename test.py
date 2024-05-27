@@ -27,10 +27,15 @@ def collect_obd_data():
             try:
                 connection = obd.OBD()
             except Exception as e:
+                print(f"{try_count} - Failed to connect to OBD-II interface: {str(e)}")
                 time.sleep(2)  # Wait for 2 seconds before retrying
-            print(f"{try_count} - Failed to connect to OBD-II interface")
-            try_count += 1
-    connection = obd.OBD()
+                try_count += 1
+                continue  # Ensure retry logic is in effect if connection fails
+
+        if connection.is_connected():
+            print("Successfully connected to OBD-II interface.")
+            break  # Break out of the loop if connected successfully
+
     conn = sqlite3.connect('obd_readings.db')
     cursor = conn.cursor()
 
@@ -46,7 +51,7 @@ def collect_obd_data():
         except KeyError:
             print(f"Command {command_name} is not supported")
 
-    # Auto-connects to USB or RF port
+    # Collect and store data from supported commands
     for command_name in supported_commands:
         response = connection.query(obd.commands[command_name])
         if response.value is not None:
