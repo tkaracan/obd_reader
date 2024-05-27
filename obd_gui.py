@@ -60,20 +60,26 @@ class InfoBox(tk.Tk):
                 frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", self.key_font_size), bg=self.bg_color, fg=self.fg_color)
                 frame.key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 0), sticky="w")
 
+                # Configure column widths within the frame: first column for subkeys, second for values
+                frame.grid_columnconfigure(0, weight=1)  # Subkeys have less width
+                frame.grid_columnconfigure(1, weight=3)  # Values have more width to align to the right
+
                 for j, sub_key in enumerate(subkeys):
                     # Subkey labels
                     key_label = tk.Label(frame, text=sub_key + ":", font=("Noto Sans Mono", 12), anchor="e", bg=self.bg_color,
                                          fg=self.fg_color)
                     # Align the key label to the left side of the column
                     key_label.grid(row=j + 1, column=0, padx=(10, 5), pady=(10 if j == 0 else 5, 5), sticky="e")
+
                     frame.key_labels[sub_key] = key_label
 
                     # Value labels
                     value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 12), anchor="w", bg=self.bg_color,
                                            fg=self.fg_color)
-                    # Align the value label to the right side of the next column
-                    value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=(10 if j == 0 else 5, 5), sticky="w")
+                    # Align the value label to the right side, filling the column space
+                    value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=(10 if j == 0 else 5, 5), sticky="ew")
                     frame.value_labels[sub_key] = value_label
+
 
 
             elif design == "percent":
