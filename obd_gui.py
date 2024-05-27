@@ -72,8 +72,7 @@ class InfoBox(tk.Tk):
 
     def update_info(self):
         for key, frame in self.info_frames.items():
-            subkeys = frame.key_labels.keys() if hasattr(frame, 'key_labels') else None
-            random_data = self.generate_random_data(key, subkeys)
+            random_data = self.generate_random_data(key)
 
             if key in ["Value 1", "Value 4"]:
                 value_label = frame.value_label
