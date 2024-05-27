@@ -101,7 +101,7 @@ class InfoBox(tk.Tk):
                     bottom_value = random_data["bottom"]
                     value = random_data["value"]
                     percentage = (value - bottom_value) / (top_value - bottom_value)
-                    new_width = max(1, int(frame.percent_box.winfo_width() * percentage))
+                    new_width = max(1, int(frame.winfo_width() * percentage))
                     frame.percent_box.configure(width=new_width)
 
                     # Update the value label with the percentage
