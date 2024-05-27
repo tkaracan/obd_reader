@@ -70,7 +70,7 @@ class InfoBox(tk.Tk):
                     # Value labels
                     value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 12), anchor="w", bg=self.bg_color,
                                            fg=self.fg_color)
-                    value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=(10, 5), sticky="w", anchor="w")
+                    value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=(10, 5), sticky="w")
                     frame.value_labels[sub_key] = value_label
 
 
