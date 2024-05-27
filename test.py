@@ -6,6 +6,7 @@ import obd
 from commands import commands_list
 from speed import Speed
 
+
 # Initialize the database
 def initialize_database():
     conn = sqlite3.connect('obd_data.db')
@@ -19,6 +20,7 @@ def initialize_database():
     ''')
     conn.commit()
     conn.close()
+
 
 # Collect data from OBD and write to SQLite database
 def collect_obd_data():
@@ -63,6 +65,7 @@ def collect_obd_data():
         conn.close()
         time.sleep(1)  # Wait for 1 second before the next iteration
 
+
 # Function to retrieve average speed data every 2 seconds
 def get_average_speed():
     speed_calculator = Speed()
@@ -74,11 +77,14 @@ def get_average_speed():
             print("No speed entries found.")
         time.sleep(2)  # Wait for 2 seconds before the next retrieval
 
+
 if __name__ == "__main__":
     initialize_database()
     obd_thread = threading.Thread(target=collect_obd_data, daemon=True)
     speed_thread = threading.Thread(target=get_average_speed, daemon=True)
     obd_thread.start()
     speed_thread.start()
-    obd_thread.join()
-    speed_thread.join()
+
+    while True:
+        # Keep the main thread running
+        time.sleep(1)
