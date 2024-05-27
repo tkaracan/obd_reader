@@ -25,8 +25,8 @@ class InfoBox(tk.Tk):
     def create_info_frames(self):
         subkeys = ["Subkey 1", "Subkey 2", "Subkey 3"]
         values = {"bottom": 0, "top": 100}
-
-        keys = ["Value 1", "Value 2", "Value 3", "Value 4"]
+        # Here you need to assign the subkeys, and designs to the corresponding keys
+        keys = ["Engine Load", "Value 2", "Value 3", "Value 4"]
         designs = ["single", "multiple", "multiple", "percent"]
         frame_subkeys = [None, subkeys, subkeys, values]
 
@@ -41,7 +41,7 @@ class InfoBox(tk.Tk):
             frame.grid_propagate(False)
 
             # Use variables for key label design
-            frame.key_label = tk.Label(frame, text=f"{key}: ", font=("Noto Sans Mono", self.key_font_size), bg=self.bg_color, fg=self.fg_color)
+            frame.key_label = tk.Label(frame, text=f"{key}", font=("Noto Sans Mono", self.key_font_size), bg=self.bg_color, fg=self.fg_color)
             frame.key_label.place(x=10, y=10)
 
             if design == "single":
@@ -90,8 +90,8 @@ class InfoBox(tk.Tk):
 
             self.info_frames[key] = frame
 
-    def generate_random_data(self, key):
-        if key == "Value 1":
+    def generate_car_data(self, key):
+        if key == "Engine Load":
             return random.randint(0, 100)
         elif key == "Value 2":
             return {
@@ -112,9 +112,9 @@ class InfoBox(tk.Tk):
 
     def update_info(self):
         for key, frame in self.info_frames.items():
-            random_data = self.generate_random_data(key)
+            random_data = self.generate_car_data(key)
 
-            if key in ["Value 1", "Value 4"]:
+            if key in ["Engine Load", "Value 4"]:
                 if key == "Value 4":
                     top_value = random_data["top"]
                     bottom_value = random_data["bottom"]
