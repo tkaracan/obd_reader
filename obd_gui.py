@@ -11,6 +11,7 @@ class InfoBox(tk.Tk):
         self.columns = 2
         self.padding = 5
         self.geometry(f"{self.width}x{self.height}")
+        self.configure(bg='black')  # Set the background color of the whole screen to black
         self.info_frames = {}
         self.create_info_frames()
         self.update_info()
@@ -27,7 +28,9 @@ class InfoBox(tk.Tk):
         frame_height = (self.height - (len(keys) // self.columns + 1) * self.padding) / (len(keys) // self.columns)
 
         for i, (key, design, subkeys) in enumerate(zip(keys, designs, frame_subkeys)):
-            frame = tk.Frame(self, width=frame_width, height=frame_height, borderwidth=1, relief="groove")
+            frame = tk.Frame(self, width=frame_width, height=frame_height, bg='black', relief="groove",
+                             highlightbackground="white",
+                             highlightthickness=1)  # Set frame background to black and border to white
             frame.grid(row=i // 2, column=i % 2, padx=self.padding, pady=self.padding)
             frame.grid_propagate(False)
 
@@ -48,11 +51,13 @@ class InfoBox(tk.Tk):
                 frame.key_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 0), sticky="w")
 
                 for j, sub_key in enumerate(subkeys):
-                    key_label = tk.Label(frame, text=sub_key, font=("Arial", 12, "bold"), anchor="e")
+                    key_label = tk.Label(frame, text=sub_key, font=("Noto Sans Mono", 12), anchor="e", bg='black',
+                                         fg='white')
                     key_label.grid(row=j + 1, column=0, padx=(10, 5), pady=(10 if j == 0 else 5, 5), sticky="e")
                     frame.key_labels[sub_key] = key_label
 
-                    value_label = tk.Label(frame, text="", font=("Arial", 12), anchor="w")
+                    value_label = tk.Label(frame, text="", font=("Noto Sans Mono", 12), anchor="w", bg='black',
+                                           fg='white')
                     value_label.grid(row=j + 1, column=1, padx=(5, 10), pady=(10 if j == 0 else 5, 5), sticky="w")
                     frame.value_labels[sub_key] = value_label
 
@@ -65,8 +70,7 @@ class InfoBox(tk.Tk):
                                              anchor='nw')
                 frame.value_label.place(relx=0.5, rely=0.5, anchor='center')
 
-
-                frame.percent_box = tk.Frame(frame, width=frame_width, height=frame_height/3, bg='black')
+                frame.percent_box = tk.Frame(frame, width=frame_width, height=frame_height / 3, bg='black')
                 frame.percent_box.place(relx=0, rely=0.5, anchor='w')
 
             self.info_frames[key] = frame
