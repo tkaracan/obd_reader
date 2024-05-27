@@ -50,20 +50,20 @@ class InfoBox(tk.Tk):
 
             self.info_frames[key] = frame
 
-    def generate_random_data(self, key, subkeys):
+    def generate_random_data(self, key):
         if key == "Value 1":
             return random.randint(0, 100)
         elif key == "Value 2":
             return {
-                subkeys[0]: random.randint(0, 100),
-                subkeys[1]: random.uniform(0, 10),
-                subkeys[2]: random.choice(["Option X", "Option Y", "Option Z"])
+                "Subkey 1": random.randint(0, 100),
+                "Subkey 2": random.uniform(0, 10),
+                "Subkey 3": random.choice(["Option X", "Option Y", "Option Z"])
             }
         elif key == "Value 3":
             return {
-                subkeys[0]: random.randint(1000, 9999),
-                subkeys[1]: random.uniform(100, 1000),
-                subkeys[2]: random.choice(["Option A", "Option B", "Option C"])
+                "Subkey 1": random.randint(1000, 9999),
+                "Subkey 2": random.uniform(100, 1000),
+                "Subkey 3": random.choice(["Option A", "Option B", "Option C"])
             }
         elif key == "Value 4":
             return random.randint(1000, 9999)
